@@ -1,6 +1,11 @@
- ☐ Install three.js (Vite)
+ ✔ Install three.js (Vite) @done (23-04-13 14:17)
  ☐ Create a scene, camera and renderer
  ☐ Create a plane
  ☐ Modify to taste with dat.gui
  ☐ Add hover effect
  ☐ Add HTML and integrate with JS
+
+ References:
+ [Three.js option 1] https://threejs.org/docs/#manual/en/introduction/Installation (Install with NPM and a build tool - recommend)
+ [Three.js option 2]  https://unpkg.com/three (Import from a CDN)
+ [Vite App] https://vitejs.dev/guide/
