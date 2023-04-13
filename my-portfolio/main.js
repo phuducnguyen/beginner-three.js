@@ -12,20 +12,24 @@ const material = new THREE.MeshBasicMaterial( { color: 0xAABBFF } );
 const cube = new THREE.Mesh( geometry, material );
 
 const planeGeometry = new THREE.PlaneGeometry( 5, 5, 10, 10 );
-const planeMaterial = new THREE.MeshBasicMaterial({
+const planeMaterial = new THREE.MeshPhongMaterial({
   color: 0xff0000,
   side: THREE.DoubleSide
 })
 const plane = new THREE.Mesh( planeGeometry, planeMaterial );
+
+const light = new THREE.DirectionalLight(0xffffff, 1);
 
 // Renderer config
 renderer.setPixelRatio(devicePixelRatio);
 renderer.setSize( window.innerWidth, window.innerHeight );
 
 document.body.appendChild( renderer.domElement );
+light.position.set( 0, 0, 1 )
 
 scene.add( cube );
 scene.add( plane );
+scene.add( light );
 
 camera.position.z = 5;
 
