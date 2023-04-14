@@ -2,6 +2,51 @@
 // Pro tips: Install with NPM and a build tool
 // Here, We import the Three.js library from a CDN 
 import * as THREE from 'https://unpkg.com/three@0.151.3/build/three.module.js';
+import * as dat from 'dat.gui'
+
+const gui = new dat.GUI()
+const world = {
+  plane: {
+    width: 10,
+    height: 10,
+    widthSegments: 10,
+    heightSegments: 10
+  }
+}
+
+gui.add(world.plane, 'width', 1, 20).
+  onChange(generatePlane)
+gui.add(world.plane, 'height', 1, 20).
+  onChange(generatePlane)
+gui.add(world.plane, 'widthSegments', 1, 50).
+  onChange(generatePlane)
+gui.add(world.plane, 'heightSegments', 1, 50).
+  onChange(generatePlane)
+
+// Generate the plane for this sources
+function generatePlane() {
+  plane.geometry.dispose()
+  plane.geometry = new THREE.PlaneGeometry(
+      world.plane.width,
+      world.plane.height,
+      world.plane.widthSegments,
+      world.plane.heightSegments
+    )
+
+  const array = plane.geometry.attributes.position.array;
+
+  for (let i = 0; i < array.length; i += 3) {
+    const x = array[i];
+    const y = array[i + 1]
+    const z = array[i + 2]
+
+    array[i + 2] = z + Math.random()
+    
+    // Do something
+    console.log( {x, y, z} );
+
+  }
+}
 
 // Group: Declare - Init
 const scene = new THREE.Scene();
@@ -21,15 +66,7 @@ const plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
 const light = new THREE.DirectionalLight(0xAABBCC, 1);
 
-const array = plane.geometry.attributes.position.array;
 
-for (let i = 0; i < array.length; i += 3) {
-  const x = array[i];
-  const y = array[i + 1];
-  const z = array[i + 2];
-  array[i + 2] = z + Math.random();
-  console.log({x, y, z});
-} 
 
 // Renderer config
 renderer.setPixelRatio(devicePixelRatio);
@@ -43,12 +80,7 @@ scene.add( light );
 
 camera.position.z = 5;
 
-/* All logged to the console for debugging purposes */
-// console.log(geometry);
-// console.log(material);
-// console.log(scene);
-// console.log(camera);
-// console.log(renderer);
+/* DEBUG Room / as many console command for me */
 // console.log(plane.geometry.attributes.position.array);
 
 /* Utility Function */
@@ -65,3 +97,4 @@ function animate() {
 
 // Run the code flow 
 animate()
+generatePlane()
