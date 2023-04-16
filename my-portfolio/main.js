@@ -4,7 +4,11 @@
 import * as THREE from 'https://unpkg.com/three@0.151.3/build/three.module.js';
 import * as dat from 'dat.gui'
 
+// OrbitControls is an add-on, allow the camera to orbit around a target
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
 const gui = new dat.GUI()
+
 const world = {
   plane: {
     width: 10,
@@ -13,6 +17,7 @@ const world = {
     heightSegments: 10
   }
 }
+
 
 gui.add(world.plane, 'width', 1, 20).
   onChange(generatePlane)
@@ -25,15 +30,15 @@ gui.add(world.plane, 'heightSegments', 1, 50).
 
 // Generate the plane for this sources
 function generatePlane() {
-  plane.geometry.dispose()
-  plane.geometry = new THREE.PlaneGeometry(
+  planeMesh.geometry.dispose()
+  planeMesh.geometry = new THREE.PlaneGeometry(
       world.plane.width,
       world.plane.height,
       world.plane.widthSegments,
       world.plane.heightSegments
     )
 
-  const array = plane.geometry.attributes.position.array;
+  const array = planeMesh.geometry.attributes.position.array;
 
   for (let i = 0; i < array.length; i += 3) {
     const x = array[i];
@@ -62,26 +67,27 @@ const planeMaterial = new THREE.MeshPhongMaterial({
   side: THREE.DoubleSide,
   flatShading: true
 })
-const plane = new THREE.Mesh( planeGeometry, planeMaterial );
+const planeMesh = new THREE.Mesh( planeGeometry, planeMaterial );
 
 const light = new THREE.DirectionalLight(0xAABBCC, 1);
+const backlight = new THREE.DirectionalLight(0xAABBCC, 1);
 
+light.position.set( 0, 0, 1 )
+backlight.position.set( 0, 0, -1 )
 
+scene.add( light );
+scene.add( backlight );
+scene.add( planeMesh );
 
 // Renderer config
 renderer.setPixelRatio(devicePixelRatio);
 renderer.setSize( window.innerWidth, window.innerHeight );
-
 document.body.appendChild( renderer.domElement );
-light.position.set( 0, 0, 1 )
 
-scene.add( plane );
-scene.add( light );
+const controls = new OrbitControls( camera, renderer.domElement );
+console.log(OrbitControls)
 
 camera.position.z = 5;
-
-/* DEBUG Room / as many console command for me */
-// console.log(plane.geometry.attributes.position.array);
 
 /* Utility Function */
 
@@ -90,11 +96,25 @@ function animate() {
   // 60fps
   requestAnimationFrame(animate);
   renderer.render( scene, camera );
+  // renderer.render( planeMesh, camera );
 
   // Animation the mesh
-  plane.rotation.x += 0.01
+  planeMesh.rotation.x += 0.01
 }
 
 // Run the code flow 
 animate()
 generatePlane()
+
+/* DEBUG Room / as many console command for me */
+const mouse = {
+  x: undefined,
+  y: undefined
+}
+
+addEventListener('mousemove', (event) => {
+  mouse.x = event.clientX / innerWidth
+  mouse.y = event.clientY
+
+  console.log(mouse)
+})

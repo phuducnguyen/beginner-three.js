@@ -1,7 +1,8 @@
  ✔ Install three.js (Vite) @done (23-04-13 14:17)
- ☐ Create a scene, camera and renderer
- ☐ Create a plane
- ☐ Modify to taste with dat.gui
+ ✔ Create a scene, camera and renderer @done (23-04-13 14:32)
+ ✔ Create a plane @done (23-04-13 19:01)
+ ✔ Modify to taste with dat.gui @done (23-04-14 18:37)
+ ✔ Add orbit controls @done (23-04-14 18:42)
  ☐ Add hover effect
  ☐ Add HTML and integrate with JS
 
